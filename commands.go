@@ -19,18 +19,12 @@ type commands struct {
 }
 
 func (c *commands) run(s *state, cmd command) error {
-	command := c.commands[cmd.name]
-
-	if command == nil {
+	command, ok := c.commands[cmd.name]
+	if !ok {
 		return fmt.Errorf("Command not found: %v", cmd.name)
 	}
 
-	err := command(s, cmd)
-	if err != nil {
-		return fmt.Errorf("Running command %v: %v", cmd.name, err)
-	}
-
-	return nil
+	return command(s, cmd)
 }
 
 func (c *commands) register(name string, f func(*state, command) error) {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"github.com/pjsmith404/gator/internal/config"
@@ -33,13 +32,6 @@ func main() {
 
 	err = cmds.run(&programState, cmd)
 	if err != nil {
-		log.Fatalf("Command run failed: %v", err)
+		log.Fatalf("Command failed: %v", err)
 	}
-
-	cfg, err = config.Read()
-	if err != nil {
-		log.Fatalf("Error reading config: %v", err)
-	}
-
-	fmt.Println(cfg)
 }
