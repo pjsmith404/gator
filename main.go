@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"os/user"
+	"os"
 	"github.com/pjsmith404/gator/internal/config"
 )
 
@@ -13,14 +13,27 @@ func main() {
 		log.Fatalf("Error reading config: %v", err)
 	}
 
-	user, err := user.Current()
-	if err != nil {
-		log.Fatalf("Couldn't get current user: %v", err)
+	s := state{
+		config: &cfg,
 	}
 
-	err = cfg.SetUser(user.Username)
+	cmds := commands{
+		commands: make(map[string]func(*state, command) error),
+	}
+	cmds.register("login", handlerLogin)
+
+	if len(os.Args) < 2 {
+		log.Fatalf("No command provided")
+	}
+
+	cmd := command{
+		name: os.Args[1],
+		args: os.Args[2:],
+	}
+
+	err = cmds.run(&s, cmd)
 	if err != nil {
-		log.Fatalf("Coudln't set current user: %v", err)
+		log.Fatalf("Command run failed: %v", err)
 	}
 
 	cfg, err = config.Read()
