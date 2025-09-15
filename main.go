@@ -13,7 +13,7 @@ func main() {
 		log.Fatalf("Error reading config: %v", err)
 	}
 
-	s := state{
+	programState := state{
 		config: &cfg,
 	}
 
@@ -31,7 +31,7 @@ func main() {
 		args: os.Args[2:],
 	}
 
-	err = cmds.run(&s, cmd)
+	err = cmds.run(&programState, cmd)
 	if err != nil {
 		log.Fatalf("Command run failed: %v", err)
 	}
