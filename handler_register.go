@@ -28,7 +28,10 @@ func handlerRegister(s *state, cmd command) error {
 		return err
 	}
 
-	s.config.SetUser(user)
+	err = s.config.SetUser(user)
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("User registered:", createdUser)
 
