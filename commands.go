@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/pjsmith404/gator/internal/config"
+	"github.com/pjsmith404/gator/internal/database"
 )
 
 type state struct {
+	db     *database.Queries
 	config *config.Config
 }
 
@@ -30,4 +32,3 @@ func (c *commands) run(s *state, cmd command) error {
 func (c *commands) register(name string, f func(*state, command) error) {
 	c.commands[name] = f
 }
-

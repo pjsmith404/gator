@@ -1,10 +1,14 @@
 package main
 
 import (
+	"database/sql"
+	"github.com/pjsmith404/gator/internal/config"
+	"github.com/pjsmith404/gator/internal/database"
 	"log"
 	"os"
-	"github.com/pjsmith404/gator/internal/config"
 )
+
+import _ "github.com/lib/pq"
 
 func main() {
 	cfg, err := config.Read()
@@ -12,7 +16,11 @@ func main() {
 		log.Fatalf("Error reading config: %v", err)
 	}
 
+	db, err := sql.Open("postgres", cfg.DbUrl)
+	dbQueries := database.New(db)
+
 	programState := state{
+		db:     dbQueries,
 		config: &cfg,
 	}
 
@@ -20,6 +28,7 @@ func main() {
 		commands: make(map[string]func(*state, command) error),
 	}
 	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
 
 	if len(os.Args) < 2 {
 		log.Fatalf("No command provided")
