@@ -2,13 +2,12 @@ package main
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
 	"github.com/pjsmith404/gator/internal/config"
 	"github.com/pjsmith404/gator/internal/database"
 	"log"
 	"os"
 )
-
-import _ "github.com/lib/pq"
 
 func main() {
 	cfg, err := config.Read()
@@ -20,6 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to DB: %v", err)
 	}
+	defer db.Close()
 
 	dbQueries := database.New(db)
 
