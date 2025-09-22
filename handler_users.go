@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 )
 
 func handlerUsers(s *state, cmd command) error {
@@ -12,7 +12,7 @@ func handlerUsers(s *state, cmd command) error {
 	}
 
 	currentUser := s.config.CurrentUserName
-	
+
 	for _, user := range users {
 		if user.Name == currentUser {
 			fmt.Println("*", user.Name, "(current)")

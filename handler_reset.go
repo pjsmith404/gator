@@ -12,6 +12,6 @@ func handlerReset(s *state, cmd command) error {
 	}
 
 	fmt.Println("Users deleted")
-	
+
 	return nil
 }
