@@ -9,8 +9,6 @@ import (
 )
 
 func handlerRegister(s *state, cmd command) error {
-	fmt.Println("Register command running")
-
 	if len(cmd.args) == 0 {
 		return fmt.Errorf("No username provided")
 	}

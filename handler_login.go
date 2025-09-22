@@ -14,10 +14,10 @@ func handlerLogin(s *state, cmd command) error {
 
 	_, err := s.db.GetUser(context.Background(), name)
 	if err != nil {
-		return err
+		return fmt.Errorf("User not regstered: %v", err)
 	}
 
-	err = s.config.SetUser(user)
+	err = s.config.SetUser(name)
 	if err != nil {
 		return err
 	}
