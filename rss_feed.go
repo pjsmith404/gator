@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
-	"encoding/xml"
 	"context"
-	"io"
+	"encoding/xml"
 	"html"
+	"io"
+	"net/http"
 )
 
 type RSSFeed struct {
@@ -33,7 +33,7 @@ func fetchFeed(ctx context.Context, feedUrl string) (*RSSFeed, error) {
 	req.Header.Add("User-Agent", "gator")
 
 	client := &http.Client{}
-	
+
 	res, err := client.Do(req)
 	if err != nil {
 		return &RSSFeed{}, err
@@ -44,7 +44,7 @@ func fetchFeed(ctx context.Context, feedUrl string) (*RSSFeed, error) {
 	if err != nil {
 		return &RSSFeed{}, err
 	}
-	
+
 	rssFeed := RSSFeed{}
 	err = xml.Unmarshal(body, &rssFeed)
 	if err != nil {
