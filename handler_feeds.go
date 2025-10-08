@@ -8,6 +8,23 @@ import (
 	"time"
 )
 
+func handlerFeeds(s *state, cmd command) error {
+	feeds, err := s.db.ListFeeds(context.Background())
+	if err != nil {
+		return err
+	}
+
+	for _, feed := range feeds {
+		user, err := s.db.GetUserById(context.Background(), feed.UserID)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Name: %v, URL: %v, User: %v\n", feed.Name, feed.Url, user.Name)
+	}
+
+	return nil
+}
+
 func handlerAddFeed(s *state, cmd command) error {
 	if len(cmd.args) < 2 {
 		return fmt.Errorf("Usage: addfeed <name> <url>")
