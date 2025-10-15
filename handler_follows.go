@@ -14,7 +14,7 @@ func handlerFollow(s *state, cmd command) error {
 	}
 
 	feedUrl := cmd.args[0]
-	
+
 	feed, err := s.db.GetFeed(context.Background(), feedUrl)
 	if err != nil {
 		return fmt.Errorf("Feed not found: %v", err)
@@ -26,11 +26,11 @@ func handlerFollow(s *state, cmd command) error {
 	}
 
 	feedFollowParams := database.CreateFeedFollowParams{
-		ID: uuid.New(),
+		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-		UserID: user.ID,
-		FeedID: feed.ID,
+		UserID:    user.ID,
+		FeedID:    feed.ID,
 	}
 
 	feedFollow, err := s.db.CreateFeedFollow(context.Background(), feedFollowParams)
@@ -42,4 +42,3 @@ func handlerFollow(s *state, cmd command) error {
 
 	return nil
 }
-
