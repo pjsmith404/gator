@@ -38,7 +38,7 @@ func handlerFollow(s *state, cmd command) error {
 		return err
 	}
 
-	fmt.Printf("%v is now following %v\n", feedFollow.UserName.String, feedFollow.FeedName.String)
+	fmt.Printf("%v is now following %v\n", feedFollow.UserName, feedFollow.FeedName)
 
 	return nil
 }

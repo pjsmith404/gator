@@ -7,7 +7,6 @@ package database
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -23,9 +22,10 @@ WITH inserted_feed AS (
 		$4,
 		$5
 	) RETURNING id, created_at, updated_at, user_id, feed_id
-) SELECT inserted_feed.id, inserted_feed.created_at, inserted_feed.updated_at, inserted_feed.user_id, inserted_feed.feed_id, users.name AS user_name, feeds.name AS feed_name FROM inserted_feed
-	LEFT JOIN users on inserted_feed.user_id = users.id
-	LEFT JOIN feeds on inserted_feed.feed_id = feeds.id
+) SELECT inserted_feed.id, inserted_feed.created_at, inserted_feed.updated_at, inserted_feed.user_id, inserted_feed.feed_id, users.name AS user_name, feeds.name AS feed_name
+FROM inserted_feed
+JOIN users on inserted_feed.user_id = users.id
+JOIN feeds on inserted_feed.feed_id = feeds.id
 `
 
 type CreateFeedFollowParams struct {
@@ -42,8 +42,8 @@ type CreateFeedFollowRow struct {
 	UpdatedAt time.Time
 	UserID    uuid.UUID
 	FeedID    uuid.UUID
-	UserName  sql.NullString
-	FeedName  sql.NullString
+	UserName  string
+	FeedName  string
 }
 
 func (q *Queries) CreateFeedFollow(ctx context.Context, arg CreateFeedFollowParams) (CreateFeedFollowRow, error) {
