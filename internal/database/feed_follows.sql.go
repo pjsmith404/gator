@@ -70,8 +70,8 @@ func (q *Queries) CreateFeedFollow(ctx context.Context, arg CreateFeedFollowPara
 const getFeedFollowsForUser = `-- name: GetFeedFollowsForUser :many
 SELECT feed_follows.id, feed_follows.created_at, feed_follows.updated_at, feed_follows.user_id, feed_follows.feed_id, users.name AS user_name, feeds.name AS feed_name
 FROM feed_follows
-JOIN users on inserted_feed.user_id = users.id
-JOIN feeds on inserted_feed.feed_id = feeds.id
+JOIN users on feed_follows.user_id = users.id
+JOIN feeds on feed_follows.feed_id = feeds.id
 WHERE feed_follows.user_id = $1
 `
 

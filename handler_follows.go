@@ -42,3 +42,22 @@ func handlerFollow(s *state, cmd command) error {
 
 	return nil
 }
+
+func handlerFollowing(s *state, cmd command) error {
+	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
+	if err != nil {
+		return fmt.Errorf("User not found: %v", err)
+	}
+
+	feedsFollowing, err := s.db.GetFeedFollowsForUser(context.Background(), user.ID)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(s.config.CurrentUserName, "is following:")
+	for _, feed := range feedsFollowing {
+		fmt.Println("-", feed.FeedName)
+	}
+
+	return nil
+}
