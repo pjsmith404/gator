@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func handlerFollow(s *state, cmd command) error {
+func handlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) == 0 {
 		return fmt.Errorf("Usage: follow <url>")
 	}
@@ -18,11 +18,6 @@ func handlerFollow(s *state, cmd command) error {
 	feed, err := s.db.GetFeed(context.Background(), feedUrl)
 	if err != nil {
 		return fmt.Errorf("Feed not found: %v", err)
-	}
-
-	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("User not found: %v", err)
 	}
 
 	feedFollowParams := database.CreateFeedFollowParams{
@@ -43,12 +38,7 @@ func handlerFollow(s *state, cmd command) error {
 	return nil
 }
 
-func handlerFollowing(s *state, cmd command) error {
-	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("User not found: %v", err)
-	}
-
+func handlerFollowing(s *state, cmd command, user database.User) error {
 	feedsFollowing, err := s.db.GetFeedFollowsForUser(context.Background(), user.ID)
 	if err != nil {
 		return err

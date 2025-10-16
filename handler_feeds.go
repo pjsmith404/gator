@@ -25,17 +25,12 @@ func handlerFeeds(s *state, cmd command) error {
 	return nil
 }
 
-func handlerAddFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.args) < 2 {
 		return fmt.Errorf("Usage: addfeed <name> <url>")
 	}
 
 	name, url := cmd.args[0], cmd.args[1]
-
-	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
-	if err != nil {
-		return err
-	}
 
 	newFeed := database.CreateFeedParams{
 		ID:        uuid.New(),
