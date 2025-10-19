@@ -6,6 +6,7 @@ import (
 	"html"
 	"io"
 	"net/http"
+	"fmt"
 )
 
 type RSSFeed struct {
@@ -61,4 +62,27 @@ func fetchFeed(ctx context.Context, feedUrl string) (*RSSFeed, error) {
 	}
 
 	return &rssFeed, err
+}
+
+func scrapeFeeds(s *state) error {
+	feed, err := s.db.GetNextFeedToFetch(context.Background())
+	if err != nil {
+		return fmt.Errorf("Failed to get next feed to fetch: %w", err)
+	}
+
+	err = s.db.MarkFeedFetched(context.Background(), feed.ID)
+	if err != nil {
+		return fmt.Errorf("Failed to mark feed fetched: %w", err)
+	}
+
+	rssFeed, err := fetchFeed(context.Background(), feed.Url)
+	if err != nil {
+		return fmt.Errorf("Failed to fetch RSS feed: %w", err)
+	}
+
+	for _, rssItem := range rssFeed.Channel.Item {
+		fmt.Println(rssItem.Title)
+	}
+
+	return nil
 }
