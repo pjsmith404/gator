@@ -16,3 +16,14 @@ SELECT * FROM feeds;
 -- name: GetFeed :one
 SELECT * FROM feeds
 WHERE url = $1 LIMIT 1;
+
+-- name: MarkFeedFetched :exec
+UPDATE feeds
+SET updated_at = current_timestamp, last_fetched_at = current_timestamp
+WHERE id = $1;
+
+-- name: GetNextFeedToFetch :one
+SELECT * FROM feeds
+ORDER BY last_fetched_at ASC NULLS FIRST
+LIMIT 1;
+
