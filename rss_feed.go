@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"encoding/xml"
+	"fmt"
 	"html"
 	"io"
 	"net/http"
-	"fmt"
 )
 
 type RSSFeed struct {
